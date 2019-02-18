@@ -1,3 +1,9 @@
+<?php
+
+include 'db.php';
+
+?>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -6,7 +12,7 @@
 	</head>
 	<body>
 		<?php
-		echo '<h1>Hola mundo</h1>';
+		echo '<h1>Hola mundo</h1>'.dbstatus();
 		?>
 	</body>
 </html>
