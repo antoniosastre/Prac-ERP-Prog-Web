@@ -9,8 +9,8 @@ $conexion = mysqli_connect("localhost", "practica", "practica", "practicaweb_dat
 
 function dbstatus(){
 	if (mysqli_connect_errno($conexion)){
-  		echo '<img src="img/green-button-x20.png">';
+  		echo 'img/green-button-x20.png';
   	}else{
-  		echo '<img src="img/green-button-x20.png">';
+  		echo 'img/green-button-x20.png';
   	}
 }
