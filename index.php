@@ -12,10 +12,9 @@ require_once 'configuration.php';
 	</head>
 	<body>
 
+		<h1 class>
+
 		<?php include 'topbar.php'; ?>
 
-		<?php
-		echo '<h1>Hola mundo</h1>'.dbstatus();
-		?>
 	</body>
 </html>

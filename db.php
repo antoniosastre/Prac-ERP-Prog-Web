@@ -2,7 +2,7 @@
 
 date_default_timezone_set('Europe/Madrid');
 
-$conexion = mysqli_connect("localhost", "practica", "practica", "practicaweb_database", "3306");
+$conexion = mysqli_connect("localhost", "practica", "practica", "antonio_sastre_programacionweb", "3306");
   if (!$conexion->set_charset("utf8")) {
     printf(" Error cargando el conjunto de caracteres utf8: %s\n", $conexion->error);
 }
