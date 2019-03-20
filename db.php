@@ -264,4 +264,25 @@ function getLinkFamilia($familia){
 
 }
 
+function actualizarUsuario($usuario, $nombre, $email){
+
+	global $conexion;
+	$que = 'UPDATE usuarios SET nombre="'.$nombre.'", email="'.$email.'" WHERE id="'.$usuario.'"';
+	mysqli_query($conexion,$que);
+
+}
+
+function userIsAdmin($usuario){
+
+	global $conexion;
+	$que = 'SELECT rol FROM usuarios WHERE id="'.$usuario.'"';
+	$res = mysqli_query($conexion,$que);
+	$usuario = mysqli_fetch_array($res);
+
+	if($usuario['rol'] = 01) return true;
+
+	return false;
+
+}
+
 ?>
