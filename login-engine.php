@@ -7,9 +7,9 @@ require_once 'db.php';
 
 		if(!empty($_POST['user']) && !empty($_POST['password'])){
 
-			if(logincredentials($_POST['user'],$_POST['password'])){
+			if(logincredentials(idOfEmail($_POST['user']),$_POST['password'])){
 				
-				setcookie('practicaweb', $_POST['user']."-and-".lastgivencookie($_POST['user']), time() + (86400 * 7), "/"); // 86400 = 1 day
+				setcookie('practicaweb', idOfEmail($_POST['user'])."-and-".lastgivencookie(idOfEmail($_POST['user'])), time() + (86400 * 7), "/");
 				$loginerror = 0;
 
 			}else{
@@ -24,7 +24,6 @@ require_once 'db.php';
 	}
 
 ?>
-
 <html>
 	<head>
 	<meta http-equiv="refresh" content="1;url=index.php">

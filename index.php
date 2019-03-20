@@ -12,8 +12,6 @@ require_once 'configuration.php';
 	</head>
 	<body>
 
-		<h1 class>
-
 		<?php include 'topbar.php'; ?>
 
 	</body>
