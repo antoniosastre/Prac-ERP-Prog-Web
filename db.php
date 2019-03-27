@@ -1,35 +1,50 @@
 <?php
 
+include('configuration.php');
+
 date_default_timezone_set('Europe/Madrid');
 
-$conexion = mysqli_connect("localhost", "practica", "practica", "antonio_sastre_programacionweb", "3306");
-
+define("DB_HOST", "localhost");
+define("DB_USER", "practica");
+define("DB_PASS", "practica");
+define("DB_DATABASE", "antonio_sastre_programacionweb");
+define("DB_PORT", "3306");
 
 function dbstatus(){
 
-	global $conexion;
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 
 	if (mysqli_connect_errno($conexion)){
   		echo 'img/red-button-x20.png';
   	}else{
   		echo 'img/green-button-x20.png';
   	}
+
+  	mysqli_close($conexion);
 }
 
 function logincredentials($user, $password){
 
-	global $conexion;
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 	$que = "SELECT contrasena FROM usuarios WHERE id='".$user."'";
 	$res = mysqli_query($conexion,$que);
 
 	if(empty($res)){
+
+		mysqli_close($conexion);
 		return false;
+
 	}else{
 		$linea = mysqli_fetch_array($res);
 		
 		if(password_verify($password , $linea['contrasena'])){
+			
+			mysqli_close($conexion);
 			return true;
+
 		}
+
+		mysqli_close($conexion);
 		return false;
 	}
 }
@@ -38,21 +53,25 @@ function lastgivencookie($id){
 
 	require_once 'functions.php';
 
-	global $conexion;
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 
 	$random = generateRandomString();
 
 	$que = "UPDATE usuarios SET lastcookiegiven=\"".$random."\" WHERE id=\"".$id."\"";
 	mysqli_query($conexion,$que);
 
+	mysqli_close($conexion);
 	return $random;
 }
 
 function idOfEmail($email){
-	global $conexion;
+	
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 	$que = "SELECT id FROM usuarios WHERE email='".$email."'";
 	$res = mysqli_query($conexion,$que);
 	$linea = mysqli_fetch_array($res);
+	
+	mysqli_close($conexion);
 	return $linea['id'];
 }
 
@@ -65,41 +84,47 @@ function isValidCookie($cookie){
 	$id = $exploded[0];
 	$code = $exploded[1];
 
-	global $conexion;
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 	$que = "SELECT lastcookiegiven FROM usuarios WHERE id='".$id."'";
 	$res = mysqli_query($conexion,$que);
 	$linea = mysqli_fetch_array($res);
 	
 	if($linea['lastcookiegiven'] == $code && strlen($linea['lastcookiegiven']) == 8){
+		mysqli_close($conexion);
 		return true;
 	}else{
+		mysqli_close($conexion);
 		return false;
 	}
 
 }
 
 function userShowNameById($id){
-	global $conexion;
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 	$que = "SELECT nombre FROM usuarios WHERE id='".$id."'";
 	$res = mysqli_query($conexion,$que);
 	$linea = mysqli_fetch_array($res);
+	
+	mysqli_close($conexion);
 	return $linea['nombre'];
 }
 
 function registrarUsuario($nombre, $email, $contrasena){
-	global $conexion;
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 
 	$nombre = mysqli_escape_string($conexion, $nombre);
 	$email = mysqli_escape_string($conexion, $email);
 	$contrasena = password_hash($contrasena, PASSWORD_DEFAULT);
 
 	$query = "INSERT INTO usuarios (email, nombre, contrasena) VALUES ('".$email."', '".$nombre."', '".$contrasena."')";
+	
+	mysqli_close($conexion);
 	return mysqli_query($conexion,$query);
 }
 
 function printTiposViaSelect(){
 
-	global $conexion;
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 	$que = "SELECT * FROM direcciones_tipos_via ORDER BY nombre ASC";
 	$res = mysqli_query($conexion,$que);
 
@@ -112,19 +137,23 @@ function printTiposViaSelect(){
 
 	echo '</select>';
 
+	mysqli_close($conexion);
+
 }
 
 function tipoViaPorId($id){
-	global $conexion;
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 	$que = "SELECT nombre FROM direcciones_tipos_via WHERE id='".$id."'";
 	$res = mysqli_query($conexion,$que);
 	$linea = mysqli_fetch_array($res);
+	
+	mysqli_close($conexion);
 	return $linea['nombre'];
 }
 
 function printDireccionesUsuario($id){
 
-	global $conexion;
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 	$que = 'SELECT * FROM direcciones WHERE usuario="'.$id.'"';
 	$res = mysqli_query($conexion,$que);
 
@@ -147,11 +176,13 @@ function printDireccionesUsuario($id){
 
 	//echo '</div>';
 
+	mysqli_close($conexion);
+
 }
 
 function registrarDireccion($id, $nombre, $tipo_via, $nombre_via, $numero, $piso, $puerta, $codigo_postal, $pais, $provincia, $localidad){
 
-	global $conexion;
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 
 	$id = mysqli_escape_string($conexion, $id);
 	$nombre = mysqli_escape_string($conexion, $nombre);
@@ -170,13 +201,14 @@ function registrarDireccion($id, $nombre, $tipo_via, $nombre_via, $numero, $piso
 
 	//echo $query;
 	
+	mysqli_close($conexion);
 	return mysqli_query($conexion,$query);
 
 }
 
 function printCarruselFotos($producto){
 
-	global $conexion;
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 
 	$que = 'SELECT COUNT(id) FROM fotografias WHERE producto="'.$producto.'"';
 	$res = mysqli_query($conexion,$que);
@@ -185,7 +217,7 @@ function printCarruselFotos($producto){
 
 	if($numeroFotos > 0){
 
-		$que = 'SELECT producto, url FROM fotografias WHERE producto="'.$producto.'"';
+		$que = 'SELECT id, random FROM fotografias WHERE producto="'.$producto.'"';
 		$res = mysqli_query($conexion,$que);
 
 		echo '	<div id="carruselProducto" class="carousel slide" data-ride="carousel">
@@ -209,12 +241,12 @@ function printCarruselFotos($producto){
 	  		if($primero){
 
 	  			echo 	'<div class="carousel-item active">
-		      				<img src="'.$foto['url'].'" class="d-block w-100" alt="...">
+		      				<img src="foto.php?id='.$foto['id'].'&rand='.$foto['random'].'" class="d-block w-100" alt="...">
 		    			</div>';
 		    	$primero = false;
 	  		}else{
 	  			echo '<div class="carousel-item active">
-		      			<img src="'.$foto['url'].'" class="d-block w-100" alt="...">
+		      			<img src="foto.php?id='.$foto['id'].'&rand='.$foto['random'].'" class="d-block w-100" alt="...">
 		    		</div>';
 	  		}
 
@@ -234,54 +266,85 @@ function printCarruselFotos($producto){
 
 	}
 
+	mysqli_close($conexion);
+
 }
 
 function productoAssocArray($producto){
 
-	global $conexion;
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 	$que = 'SELECT * FROM productos WHERE id="'.$producto.'"';
 	$res = mysqli_query($conexion,$que);
+	
+	mysqli_close($conexion);
 	return mysqli_fetch_array($res);
 
 }
 
 function usuarioAssocArray($usuario){
 
-	global $conexion;
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 	$que = 'SELECT * FROM usuarios WHERE id="'.$usuario.'"';
 	$res = mysqli_query($conexion,$que);
+	
+	mysqli_close($conexion);
 	return mysqli_fetch_array($res);
 
 }
 
 function getLinkFamilia($familia){
 
-	global $conexion;
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 	$que = 'SELECT * FROM familias WHERE id="'.$familia.'"';
 	$res = mysqli_query($conexion,$que);
 	$linea = mysqli_fetch_array($res);
+	
+	mysqli_close($conexion);
 	return '<a href="/familia.php?fm='.$linea['id'].'">'.$linea['nombre'].'</a>';
 
 }
 
 function actualizarUsuario($usuario, $nombre, $email){
 
-	global $conexion;
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 	$que = 'UPDATE usuarios SET nombre="'.$nombre.'", email="'.$email.'" WHERE id="'.$usuario.'"';
 	mysqli_query($conexion,$que);
+
+	mysqli_close($conexion);
+
+}
+
+function actualizarPassUsuario($usuario, $nuevapass){
+
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
+	$que = 'UPDATE usuarios SET contrasena="'.password_hash($nuevapass, PASSWORD_DEFAULT).'" WHERE id="'.$usuario.'"';
+	mysqli_query($conexion,$que);
+
+	mysqli_close($conexion);
 
 }
 
 function userIsAdmin($usuario){
 
-	global $conexion;
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 	$que = 'SELECT rol FROM usuarios WHERE id="'.$usuario.'"';
 	$res = mysqli_query($conexion,$que);
 	$usuario = mysqli_fetch_array($res);
 
 	if($usuario['rol'] = 01) return true;
 
+	mysqli_close($conexion);
 	return false;
+
+}
+
+function fotourl($id, $random){
+
+	$conexion = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
+	$que = 'SELECT url FROM fotografias WHERE id="'.$id.'" && random="'.$random.'"';
+	$res = mysqli_query($conexion,$que);
+	$fotourl = mysqli_fetch_array($res);
+	return $fotourl['url'];
 
 }
 

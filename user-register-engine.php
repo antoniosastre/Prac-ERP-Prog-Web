@@ -16,23 +16,21 @@ require_once 'db.php';
 
 	}else{
 
-		if(userIsAdmin(explode("-and-", $_COOKIE['practicaweb'])[0]) || $_POST['usuario'] == explode("-and-", $_COOKIE['practicaweb'])[0] && $_GET['update']='user'){
+		if((userIsAdmin(explode("-and-", $_COOKIE['practicaweb'])[0]) || $_POST['usuario'] == explode("-and-", $_COOKIE['practicaweb'])[0]) && $_GET['update']=='user'){
 
 			actualizarUsuario($_POST['usuario'], $_POST['nombre'], $_POST['email']);
 
 		}
 
-		if(userIsAdmin(explode("-and-", $_COOKIE['practicaweb'])[0]) || $_POST['usuario'] == explode("-and-", $_COOKIE['practicaweb'])[0] && $_GET['update']='pass'){
+		if((userIsAdmin(explode("-and-", $_COOKIE['practicaweb'])[0]) || $_POST['usuario'] == explode("-and-", $_COOKIE['practicaweb'])[0]) && $_GET['update']=='pass'){
 
-			//actualizarPassUsuario($_POST['usuario'], $_POST['nombre'], $_POST['email']);
+			actualizarPassUsuario($_POST['usuario'], $_POST['nuevapass1']);
 
 		}
 
 
 
 	}
-
-
 
 header('Location: index.php');
 

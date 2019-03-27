@@ -8,7 +8,7 @@ require_once 'db.php';
 	
 	<img class="navbar-brand" src="<?php dbstatus(); ?>">
 	
-	<a class="navbar-brand h1" href="#">Papelería 'Perdiendo los papeles'</a>
+	<a class="navbar-brand h1" href="index.php">Papelería 'Perdiendo los papeles'</a>
 	
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span></button>
